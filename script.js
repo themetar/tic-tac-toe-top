@@ -131,10 +131,16 @@ const boardUIController = (function(){
     const row = parseInt(this.getAttribute('data-row'));
     const col = parseInt(this.getAttribute('data-col'));
     const move = {row: row, col: col};
-    if (gameBoard.isValidMove(move)) {
+    if (!gameBoard.isOver() && gameBoard.isValidMove(move)) {
       gameBoard.makeMove(move, playerManager.currentPlayer().getMark());
+      if (!gameBoard.isOver()) playerManager.switchPlayer();
+      
+      if (gameBoard.isOver()){
+        if (gameBoard.isWon()) console.log("WON " + playerManager.currentPlayer().getName());
+        if (gameBoard.isTied()) console.log("TIE");
+      }
+      
       refresh();
-      playerManager.switchPlayer();
     }
   }
 
