@@ -24,7 +24,13 @@
   box-shadow: 0 10px 0 gray;
 }
 
-#board div:not(.X):hover {
+#board div.O {
+  background-color: orange;
+  bottom: 10px;
+  box-shadow: 0 10px 0 gray;
+}
+
+#board div:not(.X):not(.O):hover {
   bottom: 0;
   box-shadow: 0 0 0 gray;
   transition-duration: .1s;

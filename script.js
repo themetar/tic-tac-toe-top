@@ -45,6 +45,46 @@ gameBoard.reset();
 
 console.log(gameBoard.toString());
 
+const playerManager = (function (){
+  let players = {x: null, o: null};
+  let currentPlayer = 'x';
+
+  function Player(name) {
+    function getName() { return name; }
+
+    function getMark() {
+      for(let mark in players){
+        if (players[mark] === this) return mark;
+      }
+    }
+
+    return {getName: getName,
+            getMark: getMark};
+  }
+
+  function switchPlayer() {
+    currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+  }
+
+  function setPlayerX(player) {
+    players.x = player;
+  }
+
+  function setPlayerO(player) {
+    players.o = player;
+  }
+
+  return { Player: Player,
+            switchPlayer: switchPlayer,
+            setPlayerX: setPlayerX,
+            setPlayerO: setPlayerO,
+            currentPlayer: function() { return players[currentPlayer]; }
+  };
+})();
+
+playerManager.setPlayerX(playerManager.Player("Some Name"));
+playerManager.setPlayerO(playerManager.Player("Person Otherman"));
+
 const boardUIController = (function(){
   const board_div = document.querySelector('#board');
   
@@ -64,8 +104,9 @@ const boardUIController = (function(){
     const col = parseInt(this.getAttribute('data-col'));
     const move = {row: row, col: col};
     if (gameBoard.isValidMove(move)) {
-      gameBoard.makeMove(move, 'x');
+      gameBoard.makeMove(move, playerManager.currentPlayer().getMark());
       refresh();
+      playerManager.switchPlayer();
     }
   }
 
