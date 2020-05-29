@@ -29,10 +29,38 @@ const gameBoard = (function () {
     return board[row][col];
   }
 
+  function winner() {
+    return  board[0][0] === board[0][1] && board[0][1] === board[0][2] && board[0][0] ||
+            board[1][0] === board[1][1] && board[1][1] === board[1][2] && board[1][0] ||
+            board[2][0] === board[2][1] && board[2][1] === board[2][2] && board[2][0] ||
+      
+            board[0][0] === board[1][0] && board[1][0] === board[2][0] && board[0][0] ||
+            board[0][1] === board[1][1] && board[1][1] === board[2][1] && board[0][1] ||
+            board[0][2] === board[1][2] && board[1][2] === board[2][2] && board[0][2] ||
+      
+            board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] ||
+            board[2][0] === board[1][1] && board[1][1] === board[0][2] && board[2][0] || '';
+  }
+
+  function isWon() {
+    return  winner() !== '';
+  }
+
+  function isTied() {
+    return board.every(function(row) {
+      return row.every(function (mark) { return mark !== ''; });
+    } ) && !isWon();;
+  }
+
+  function isOver() { return isWon() || isTied(); }
+
   return {isValidMove: isValidMove,
           makeMove: makeMove,
           reset: reset,
           at: at,
+          isTied: isTied,
+          isWon: isWon,
+          isOver: isOver,
           toString: toString};
 })();
 
