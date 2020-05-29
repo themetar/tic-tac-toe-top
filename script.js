@@ -25,9 +25,14 @@ const gameBoard = (function () {
     return board.map((row) => row.toString()).join('\n');
   }
 
+  function at(row, col) {
+    return board[row][col];
+  }
+
   return {isValidMove: isValidMove,
           makeMove: makeMove,
           reset: reset,
+          at: at,
           toString: toString};
 })();
 
@@ -39,3 +44,41 @@ console.log(gameBoard.toString());
 gameBoard.reset();
 
 console.log(gameBoard.toString());
+
+const boardUIController = (function(){
+  const board_div = document.querySelector('#board');
+  
+  // make cells
+  for(let r = 0; r < 3; r++) {
+    for(let c = 0; c < 3; c++) {
+      let cell = document.createElement('div');
+      cell.setAttribute('data-row', r);
+      cell.setAttribute('data-col', c);
+      cell.addEventListener("click", clickHandler);
+      board_div.appendChild(cell);
+    }
+  }
+
+  function clickHandler(event) {
+    const row = parseInt(this.getAttribute('data-row'));
+    const col = parseInt(this.getAttribute('data-col'));
+    const move = {row: row, col: col};
+    if (gameBoard.isValidMove(move)) {
+      gameBoard.makeMove(move, 'x');
+      refresh();
+    }
+  }
+
+  function refresh() {
+    for(let cell of board_div.children) {
+      const row = parseInt(cell.getAttribute('data-row'));
+      const col = parseInt(cell.getAttribute('data-col'));
+      const mark = gameBoard.at(row, col);
+      if (mark == '') {
+        0;
+      } else {
+        cell.classList.add(mark.toUpperCase());
+      }
+    }
+  }
+})();

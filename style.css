@@ -1,0 +1,31 @@
+#board {
+  width: 200px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  align-items: flex-end;
+}
+
+#board div {
+  width: 90px;
+  height: 90px;
+  background-color: aqua;
+  border-radius: 10px;
+  position: relative;
+  bottom: 5px;
+  box-shadow: 0 5px 0 gray;
+  transition: all .2s ease-out;
+}
+
+#board div.X {
+  background-color: teal;
+  bottom: 10px;
+  box-shadow: 0 10px 0 gray;
+}
+
+#board div:not(.X):hover {
+  bottom: 0;
+  box-shadow: 0 0 0 gray;
+  transition-duration: .1s;
+}
