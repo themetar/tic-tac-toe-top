@@ -35,3 +35,8 @@
   box-shadow: 0 0 0 gray;
   transition-duration: .1s;
 }
+
+form.closed {
+  height: 0;
+  overflow-y: hidden;
+}

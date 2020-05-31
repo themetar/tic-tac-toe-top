@@ -110,9 +110,6 @@ const playerManager = (function (){
   };
 })();
 
-playerManager.setPlayerX(playerManager.Player("Some Name"));
-playerManager.setPlayerO(playerManager.Player("Person Otherman"));
-
 const boardUIController = (function(){
   const board_div = document.querySelector('#board');
   
@@ -131,13 +128,13 @@ const boardUIController = (function(){
     const row = parseInt(this.getAttribute('data-row'));
     const col = parseInt(this.getAttribute('data-col'));
     const move = {row: row, col: col};
-    if (!gameBoard.isOver() && gameBoard.isValidMove(move)) {
+    if (gameStateManager.canPlay() && !gameBoard.isOver() && gameBoard.isValidMove(move)) {
       gameBoard.makeMove(move, playerManager.currentPlayer().getMark());
       if (!gameBoard.isOver()) playerManager.switchPlayer();
       
       if (gameBoard.isOver()){
-        if (gameBoard.isWon()) console.log("WON " + playerManager.currentPlayer().getName());
-        if (gameBoard.isTied()) console.log("TIE");
+        if (gameBoard.isWon()) gameStateManager.gameEnded(playerManager.currentPlayer());
+        if (gameBoard.isTied()) gameStateManager.gameEnded();
       }
       
       refresh();
@@ -150,10 +147,54 @@ const boardUIController = (function(){
       const col = parseInt(cell.getAttribute('data-col'));
       const mark = gameBoard.at(row, col);
       if (mark == '') {
-        0;
+        cell.classList.remove('X');
+        cell.classList.remove('O');
       } else {
         cell.classList.add(mark.toUpperCase());
       }
     }
   }
+
+  return {reset: function () {
+                  gameBoard.reset();
+                  refresh();
+                }};
 })();
+
+const gameStateManager = (function (form){
+  let state = 'pre-game';
+
+  form.addEventListener('submit', function (event){
+    event.preventDefault();
+
+    // get names
+    const x_name = form.querySelector('input[id="player-x-name"]').value || form.querySelector('input[id="player-x-name"]').placeholder;
+    const o_name = form.querySelector('input[id="player-o-name"]').value || form.querySelector('input[id="player-o-name"]').placeholder;
+
+    // set up players
+    playerManager.setPlayerX(playerManager.Player(x_name));
+    playerManager.setPlayerO(playerManager.Player(o_name));
+
+    state = 'playing';
+
+    form.classList.add('closed');
+
+    boardUIController.reset();
+  });
+
+  function gameEnded(winner = null) {
+    if (winner) {
+      console.log("WON " + winner.getName());
+    } else {
+      console.log("TIE");
+    }
+
+    state = 'pre-game';
+
+    form.classList.remove('closed');
+  }
+
+  return {canPlay: function () { return state === 'playing'; },
+          gameEnded: gameEnded};
+  
+})(document.querySelector('form'));
