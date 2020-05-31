@@ -1,16 +1,21 @@
+html { font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+
 #board {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
   align-items: flex-end;
+  padding-top: 10px;
 }
 
 #board div {
   width: 90px;
   height: 90px;
-  background-color: aqua;
+  background-color: #eee;
   border-radius: 10px;
   position: relative;
   bottom: 5px;
@@ -18,14 +23,8 @@
   transition: all .2s ease-out;
 }
 
-#board div.X {
-  background-color: teal;
-  bottom: 10px;
-  box-shadow: 0 10px 0 gray;
-}
-
+#board div.X,
 #board div.O {
-  background-color: orange;
   bottom: 10px;
   box-shadow: 0 10px 0 gray;
 }
@@ -34,6 +33,55 @@
   bottom: 0;
   box-shadow: 0 0 0 gray;
   transition-duration: .1s;
+}
+
+.X,
+#board .X { background-color: teal; }
+
+.O,
+#board .O { background-color: orange; }
+
+
+form {
+  display: flex;
+  margin-bottom: 20px;
+  height: 120px;
+  transition: all .2s;
+}
+
+form fieldset {
+  flex-grow: 1;
+  padding: 20px;
+  border-radius: 10px;
+  border: none;
+}
+
+fieldset:nth-child(1) { order: 1; }
+fieldset:nth-child(2) { order: 3; }
+
+fieldset legend {
+  background-color: inherit;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+form button {
+  margin-left: 20px;
+  margin-right: 20px;
+  align-self: center;
+
+  padding: 10px 20px;
+  border-radius: 5px;
+  background: #eee;
+  background: linear-gradient(to right, teal, orange);
+
+  order: 2;
+}
+
+form label,
+form legend,
+form button {
+  color: black;
 }
 
 form.closed {
