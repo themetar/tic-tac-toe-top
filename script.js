@@ -106,7 +106,8 @@ const playerManager = (function (){
             switchPlayer: switchPlayer,
             setPlayerX: setPlayerX,
             setPlayerO: setPlayerO,
-            currentPlayer: function() { return players[currentPlayer]; }
+            currentPlayer: function() { return players[currentPlayer]; },
+            resetStarting: function() { currentPlayer = 'x'; }
   };
 })();
 
@@ -161,7 +162,7 @@ const boardUIController = (function(){
                 }};
 })();
 
-const gameStateManager = (function (form){
+const gameStateManager = (function (form, message){
   let state = 'pre-game';
 
   form.addEventListener('submit', function (event){
@@ -174,20 +175,27 @@ const gameStateManager = (function (form){
     // set up players
     playerManager.setPlayerX(playerManager.Player(x_name));
     playerManager.setPlayerO(playerManager.Player(o_name));
+    playerManager.resetStarting();
 
     state = 'playing';
 
     form.classList.add('closed');
+    message.classList.add('closed');
+
+    message.classList.remove('X');
+    message.classList.remove('O');
 
     boardUIController.reset();
   });
 
   function gameEnded(winner = null) {
     if (winner) {
-      console.log("WON " + winner.getName());
+      message.textContent = winner.getName() + " WON!";
+      message.classList.add(winner.getMark().toUpperCase());
     } else {
-      console.log("TIE");
+      message.textContent = "It's a TIE.";
     }
+    message.classList.remove('closed');
 
     state = 'pre-game';
 
@@ -197,4 +205,4 @@ const gameStateManager = (function (form){
   return {canPlay: function () { return state === 'playing'; },
           gameEnded: gameEnded};
   
-})(document.querySelector('form'));
+})(document.querySelector('form'), document.querySelector('#message'));

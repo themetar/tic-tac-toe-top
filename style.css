@@ -10,6 +10,7 @@ html { font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Luci
   gap: 15px;
   align-items: flex-end;
   padding-top: 10px;
+  margin-bottom: 20px;
 }
 
 #board div {
@@ -36,10 +37,12 @@ html { font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Luci
 }
 
 .X,
-#board .X { background-color: teal; }
+#board .X,
+#message.X { background-color: teal; }
 
 .O,
-#board .O { background-color: orange; }
+#board .O,
+#message.O { background-color: orange; }
 
 
 form {
@@ -83,7 +86,14 @@ form button {
   color: black;
 }
 
-form.closed {
+.closed {
   transform: scaleY(0);
   overflow-y: hidden;
+}
+
+#message {
+  background-color: #eee;
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform .2s;
 }
