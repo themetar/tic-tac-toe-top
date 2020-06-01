@@ -64,15 +64,6 @@ const gameBoard = (function () {
           toString: toString};
 })();
 
-gameBoard.makeMove({row: 0, col:1}, 'x');
-gameBoard.makeMove({row: 2, col:2}, 'o');
-
-console.log(gameBoard.toString());
-
-gameBoard.reset();
-
-console.log(gameBoard.toString());
-
 const playerManager = (function (){
   let players = {x: null, o: null};
   let currentPlayer = 'x';
