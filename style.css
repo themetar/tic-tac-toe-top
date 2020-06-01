@@ -45,7 +45,6 @@ html { font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Luci
 form {
   display: flex;
   margin-bottom: 20px;
-  height: 120px;
   transition: all .2s;
 }
 
@@ -85,6 +84,6 @@ form button {
 }
 
 form.closed {
-  height: 0;
+  transform: scaleY(0);
   overflow-y: hidden;
 }
